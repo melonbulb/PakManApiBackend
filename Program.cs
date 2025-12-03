@@ -1,6 +1,8 @@
 
 namespace PakManApiBackend;
 
+using PakManApiBackend.Services;
+
 public class Program
 {
     public static void Main(string[] args)
@@ -25,24 +27,21 @@ public class Program
 
         app.UseAuthorization();
 
-        var summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
+        var gameState = GameGenerator.GenerateCustomMap1();
 
-        app.MapGet("/weatherforecast", (HttpContext httpContext) =>
+        app.MapGet("/gamestate", () =>
         {
-            var forecast = Enumerable.Range(1, 5).Select(index =>
-                new WeatherForecast
-                {
-                    Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                    TemperatureC = Random.Shared.Next(-20, 55),
-                    Summary = summaries[Random.Shared.Next(summaries.Length)]
-                })
-                .ToArray();
-            return forecast;
-        })
-        .WithName("GetWeatherForecast");
+            var response = new
+            {
+                gameState.Map,
+                gameState.Player,
+                gameState.Enemies
+            };
+
+            return Results.Ok(response);
+        });
+
+
 
         app.Run();
     }

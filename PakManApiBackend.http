@@ -1,6 +1,6 @@
 @PakManApiBackend_HostAddress = http://localhost:5249
 
-GET {{PakManApiBackend_HostAddress}}/weatherforecast/
+GET {{PakManApiBackend_HostAddress}}/gamestate/
 Accept: application/json
 
 ###
