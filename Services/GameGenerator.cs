@@ -106,12 +106,13 @@ public class GameGenerator
         map.SetTile(Position(14, 11), "power-up");
         map.SetTile(Position(14, 3), "power-up");
 
+
         Graph graph = GraphBuilder.BuildGraph(map);
-        Player player = new Player("Player1", "player.png", Position(5, 1));
+        Player player = new Player(1, "Player1", "player.png", Position(5, 1));
         List<Enemy> enemies = new List<Enemy>
         {
-            new Enemy("Enemy1", "enemy.png", Position(14, 1)),
-            new Enemy("Enemy2", "enemy.png", Position(14, 13))
+            new Enemy(1, "Enemy1", "enemy.png", Position(14, 1)),
+            new Enemy(2, "Enemy2", "enemy.png", Position(14, 13))
         };
 
         GameState game = new GameState(map, graph, player, enemies);

@@ -1,6 +1,5 @@
 namespace PakManApiBackend.Services;
 
-using System.Text.Json;
 using PakManApiBackend.Models;
 
 public class GameState
@@ -16,7 +15,10 @@ public class GameState
 
     public Map Map => map;
     public Player? Player => player;
-    public Graph Graph => graph;
+    public Dictionary<string, string[]> Graph => graph?.AdjacencyList?.ToDictionary(
+        kvp => $"{kvp.Key.X},{kvp.Key.Y}",
+        kvp => kvp.Value.Select(pos => $"{pos.X},{pos.Y}").ToArray()
+    ) ?? new Dictionary<string, string[]>();
     public List<Enemy> Enemies => enemies;
 
 
@@ -24,7 +26,14 @@ public class GameState
     {
         this.map = map;
         this.graph = graph;
-        this.player = player;
+        if (player != null)
+        {
+            SetPlayer(player);
+        }
+        else
+        {
+            this.player = null;
+        }
         enemyCount = 0;
         this.enemies = new List<Enemy>();
         foreach (var enemy in enemies)
@@ -43,13 +52,13 @@ public class GameState
         {
             throw new InvalidOperationException("Graph not generated. Call GenerateGraph() before setting the player.");
         }
-        if (graph.AdjacencyList.ContainsKey(newEnemy.Position) == false)
+        if (graph.AdjacencyList.ContainsKey(newEnemy.GetSpawnPosition()) == false)
         {
-            throw new ArgumentException($"Enemy {newEnemy.Name} at {newEnemy.Position} is not valid on the map.");
+            throw new ArgumentException($"Enemy {newEnemy.Name} at {newEnemy.GetSpawnPosition()} is not valid on the map.");
         }
         enemies.Add(newEnemy);
         enemyCount++;
-        Printer.Log("Enemy added at position (" + newEnemy.Position.X + ", " + newEnemy.Position.Y + ")", "info");
+        Printer.Log("Enemy added at position (" + newEnemy.GetSpawnPosition().X + ", " + newEnemy.GetSpawnPosition().Y + ")", "info");
         return true;
     }
 
@@ -76,14 +85,14 @@ public class GameState
         {
             throw new InvalidOperationException("Graph not generated. Call GenerateGraph() before setting the player.");
         }
-        if (graph.AdjacencyList.ContainsKey(newPlayer.Position) == false)
+        if (graph.AdjacencyList.ContainsKey(newPlayer.GetSpawnPosition()) == false)
         {
             Printer.Log("Invalid position for player.", "warning");
             return false;
         }
         player = newPlayer;
-        map.RemoveTile(newPlayer.Position);
-        Printer.Log("Player set at position (" + newPlayer.Position.X + ", " + newPlayer.Position.Y + ")", "info");
+        map.RemoveTile(newPlayer.GetSpawnPosition());
+        Printer.Log("Player set at position (" + newPlayer.GetSpawnPosition().X + ", " + newPlayer.GetSpawnPosition().Y + ")", "info");
         return true;
     }
 
@@ -102,7 +111,7 @@ public class GameState
         }
         if (player != null)
         {
-            player.Position = newPos;
+            player.SetSpawnPosition(newPos);
             map.RemoveTile(newPos);
             return true;
         }

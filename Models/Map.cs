@@ -14,6 +14,7 @@ public class Map
     public int PowerUpCount => powerUpCount;
     public int[][] MapArray => map;
 
+
     /**
     * Initializes a new instance of the Map class with specified dimensions.
     */

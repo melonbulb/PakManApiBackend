@@ -29,37 +29,37 @@ public class Printer
         Console.ResetColor();
     }
 
-    /**
-    * Prints the paths from each enemy to the player.
-    */
-    public static void PrintEnemiesToPlayerPaths(GameState game)
-    {
-        Player? player = game.Player;
-        List<Enemy> enemies = game.Enemies;
-        Graph graph = game.Graph;
-        if (player == null)
-        {
-            Log("Player not set. Cannot compute paths.", "error");
-            return;
-        }
-        foreach (var enemy in enemies)
-        {
-            var path = graph.GetShortestPath(enemy.Position, player.Position);
-            if (path != null)
-            {
-                Console.WriteLine($"Path from Enemy {enemy.Name} at ({enemy.Position.X}, {enemy.Position.Y}) to Player at ({player.Position.X}, {player.Position.Y}):");
-                foreach (var step in path)
-                {
-                    Console.Write($"({step.X}, {step.Y}) ");
-                }
-                Console.WriteLine();
-            }
-            else
-            {
-                Console.WriteLine($"No path found from Enemy {enemy.Name} at ({enemy.Position.X}, {enemy.Position.Y}) to Player at ({player.Position.X}, {player.Position.Y}).");
-            }
-        }
-    }
+    // /**
+    // * Prints the paths from each enemy to the player.
+    // */
+    // public static void PrintEnemiesToPlayerPaths(GameState game)
+    // {
+    //     Player? player = game.Player;
+    //     List<Enemy> enemies = game.Enemies;
+    //     Graph graph = game.Graph;
+    //     if (player == null)
+    //     {
+    //         Log("Player not set. Cannot compute paths.", "error");
+    //         return;
+    //     }
+    //     foreach (var enemy in enemies)
+    //     {
+    //         var path = graph.GetShortestPath(enemy.GetSpawnPosition(), player.GetSpawnPosition());
+    //         if (path != null)
+    //         {
+    //             Console.WriteLine($"Path from Enemy {enemy.Name} at ({enemy.GetSpawnPosition().X}, {enemy.GetSpawnPosition().Y}) to Player at ({player.GetSpawnPosition().X}, {player.GetSpawnPosition().Y}):");
+    //             foreach (var step in path)
+    //             {
+    //                 Console.Write($"({step.X}, {step.Y}) ");
+    //             }
+    //             Console.WriteLine();
+    //         }
+    //         else
+    //         {
+    //             Console.WriteLine($"No path found from Enemy {enemy.Name} at ({enemy.GetSpawnPosition().X}, {enemy.GetSpawnPosition().Y}) to Player at ({player.GetSpawnPosition().X}, {player.GetSpawnPosition().Y}).");
+    //         }
+    //     }
+    // }
 
     /**
     * Prints a report of the map details.
@@ -84,7 +84,7 @@ public class Printer
         Console.WriteLine($"Enemy Count: {enemyCount}");
         if (player != null)
         {
-            Console.WriteLine($"Player Start Position: ({player.Position.X}, {player.Position.Y})");
+            Console.WriteLine($"Player Start GetSpawnPosition(): ({player.GetSpawnPosition().X}, {player.GetSpawnPosition().Y})");
         }
         else
         {
@@ -94,7 +94,7 @@ public class Printer
         {
             for (int i = 0; i < enemies.Count; i++)
             {
-                Console.WriteLine($"Enemy {enemies[i].Name} Start Position: ({enemies[i].Position.X}, {enemies[i].Position.Y})");
+                Console.WriteLine($"Enemy {enemies[i].Name} Start Position: ({enemies[i].GetSpawnPosition().X}, {enemies[i].GetSpawnPosition().Y})");
             }
         }
         else
@@ -144,13 +144,13 @@ public class Printer
                             message += "💪";
                             break;
                     }
-                    if (player != null && player.Position.X == x && player.Position.Y == y)
+                    if (player != null && player.GetSpawnPosition().X == x && player.GetSpawnPosition().Y == y)
                     {
                         message += "😃";
                     }
                     foreach (var enemy in enemies)
                     {
-                        if (enemy.Position.X == x && enemy.Position.Y == y)
+                        if (enemy.GetSpawnPosition().X == x && enemy.GetSpawnPosition().Y == y)
                         {
                             message += "👻";
                         }

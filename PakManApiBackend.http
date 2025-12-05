@@ -1,6 +1,18 @@
 @PakManApiBackend_HostAddress = http://localhost:5249
 
-GET {{PakManApiBackend_HostAddress}}/gamestate/
+GET {{PakManApiBackend_HostAddress}}/api/gamestate/
 Accept: application/json
+
+GET {{PakManApiBackend_HostAddress}}/api/score/
+Accept: application/json
+
+
+POST {{PakManApiBackend_HostAddress}}/api/score
+Content-Type: application/json
+
+{
+  "playerName": "TestPlayer",
+  "value": 15000
+}
 
 ###

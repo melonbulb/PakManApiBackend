@@ -2,24 +2,16 @@ namespace PakManApiBackend.Models;
 
 public class Player : Sprite
 {
-    private int score;
-    private int lives;
+    public int HighestScore { get; set; }
 
-    public Player(string name, string img, Map.Position position) : base(name, img, position)
-    {
-        score = 0;
-        lives = 3;
-    }
+    protected Player() { }
 
-    public int Score
-    {
-        get { return score; }
-        set { score = value; }
-    }
+    public Player(int id, string name, string img, Map.Position spawnPosition) : base(id, name, img, spawnPosition)
+    { }
 
-    public int Lives
+    public void SetHighestScore(int score, int lives)
     {
-        get { return lives; }
-        set { lives = value; }
+        HighestScore = score + (lives - 1) * 100;
+        new Score(Name, HighestScore);
     }
 }

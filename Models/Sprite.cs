@@ -2,33 +2,29 @@ namespace PakManApiBackend.Models;
 
 public class Sprite
 {
-    string name;
-    string imagePath;
+    public int Id { get; set; }
+    public string Name { get; set; }
+    public string ImagePath { get; set; }
+    private Map.Position spawnPosition { get; set; }
 
-    Map.Position position;
+    // For EF Core
+    protected Sprite() { }
 
-    public Sprite(string name, string imagePath, Map.Position position)
+    public Sprite(int id, string name, string imagePath, Map.Position spawnPosition)
     {
-        this.name = name;
-        this.imagePath = imagePath;
-        this.position = position;
+        Id = id;
+        Name = name;
+        ImagePath = imagePath;
+        this.spawnPosition = spawnPosition;
     }
 
-    public string Name
+    public Map.Position GetSpawnPosition()
     {
-        get { return name; }
-        set { name = value; }
+        return spawnPosition;
     }
 
-    public string ImagePath
+    public void SetSpawnPosition(Map.Position newPosition)
     {
-        get { return imagePath; }
-        set { imagePath = value; }
-    }
-
-    public Map.Position Position
-    {
-        get { return position; }
-        set { position = value; }
+        spawnPosition = newPosition;
     }
 }
